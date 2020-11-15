@@ -1,0 +1,35 @@
+・ rensa portfolio 環境導入手順
+
+1. Docker 関連ミドルウェアのインストール
+
+https://hub.docker.com/editions/community/docker-ce-desktop-mac
+
+2. プロジェクトファイル portfolio を本手順書と同じ階層へ clone する。
+※本手順書に同梱されているプロジェクトをそのまま使う場合はこの手順をスキップする。
+
+  https://github.com/rsa-develop/portfolio.git
+
+  id : development@rensa.co.jp
+  pw : devrensa.2011
+
+3. ターミナルで本手順書と同じ階層を開き以下の 2 つのコマンドを実行する。
+
+docker-compose build
+docker-compose up -d
+
+※削除したい時は以下のコマンドで一括削除可能
+
+インスタンスだけ削除の場合
+docker-compose down --volumes
+
+完全削除の場合
+docker-compose down --rmi all --volumes
+
+4. 自分用の portfolio 画面ファイルを作成する。
+
+例) portfolio/templates/Portfolio/ks.php
+※既存の php ファイルをコピーして自分の名前に変更する形を推奨。
+
+5. ブラウザで「http://localhost:20080/<手順 4 で作成したファイルの拡張子抜きファイル名>」を参照し、動作確認を行う。
+
+例 : http://localhost:20080/ks

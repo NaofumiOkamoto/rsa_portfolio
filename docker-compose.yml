@@ -1,0 +1,49 @@
+version: "3.3"
+ 
+services:
+  app:
+    hostname: 'portfolio.rensa.jp.net'
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - .:/var/www/html
+      - ./docker/apache/SSL/ssl.conf:/etc/httpd/conf.d/ssl.conf
+      - ./docker/php.ini:/usr/local/etc/php/php.ini
+    ports:
+      - 20080:80
+    environment:
+      TZ: "Asia/Tokyo"
+    depends_on:
+      - db
+    networks:
+      web_segment:
+        ipv4_address: 172.40.0.2
+
+  db:
+    image: mysql:8.0
+    volumes:
+      - db-store:/var/lib/mysql
+      - ./logs:/var/log/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - "23306:3306" 
+    environment:
+      MYSQL_ROOT_PASSWORD: rensa2011
+      MYSQL_USER: rensa
+      MYSQL_PASSWORD: rensa2011
+      MYSQL_DATABASE: portfolio
+      TZ: "Asia/Tokyo"
+    networks:
+      web_segment:
+        ipv4_address: 172.40.0.3
+
+networks:
+  web_segment:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.40.0.0/24
+
+volumes:
+  db-store:
